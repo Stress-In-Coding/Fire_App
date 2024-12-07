@@ -1,0 +1,183 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block content %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+<div class="page-inner">
+  <div class="page-header">
+    <h4 class="page-title">Dashboard</h4>
+    <ul class="breadcrumbs">
+      <li class="nav-home">
+        <a href="#">
+          <i class="flaticon-home"></i>
+        </a>
+      </li>
+      <li class="separator">
+        <i class="flaticon-right-arrow"></i>
+      </li>
+      <li class="nav-item">
+        <a href="#">Maps</a>
+      </li>
+      <li class="separator">
+        <i class="flaticon-right-arrow"></i>
+      </li>
+      <li class="nav-item">
+        <a href="#">Stations</a>
+      </li>
+    </ul>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card card-transparent">
+        <div class="card-header">
+////
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title text-center">Fire Incident Locations in Palawan</h4>
+    <p class="card-category text-center">Made by our friends from <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>.</p>
+  </div>
+  <div class="card-body">
+    <div class="col-md-6 ml-auto mr-auto">
+      <div class="form-group">
+        <select id="city-select" class="form-control">
+          <option value="">Select a city in Palawan</option>
+          <!-- Add Palawan city options here -->
+          <option value="Puerto Princesa">Puerto Princesa</option>
+          <option value="El Nido">El Nido</option>
+          <option value="Coron">Coron</option>
+          <option value="Bataraza">Bataraza</option>
+          <option value="San Vicente">San Vicente</option>
+          <option value="Roxas">Roxas</option>
+          <option value="Culion">Culion</option>
+          <option value="Balabac">Balabac</option>
+          <option value="Taytay">Taytay</option>
+          <option value="Narra">Narra</option>
+        </select>
+      </div>
+    </div>
+    <div id="map" style="width: 100%; height: 400px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+  // Initialize map with Palawan center (Puerto Princesa)
+  var map = L.map('map').setView([9.7457, 118.7354], 10);  // Coordinates for Palawan's center
+
+  // Use OpenStreetMap tiles for the map
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  // Fire icon for fire incidents
+  var fireIcon = L.icon({
+    iconUrl: 'https://banner2.cleanpng.com/20240121/kjg/transparent-fire-icon-red-fire-icon-with-white-background-and-swirling-1710913379276.webp',  // Replace with your fire icon URL
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],  // Icon center point
+    popupAnchor: [0, -32]  // Popup position relative to the icon
+  });
+
+  // Fire incident locations in Palawan
+  var fireIncidents = [
+    { city: "Puerto Princesa", coords: [9.7415, 118.7384], description: "Fire in residential area" },
+    { city: "El Nido", coords: [11.2091, 119.3917], description: "Wildfire near forest" },
+    { city: "Coron", coords: [12.0000, 120.0000], description: "Fire in local market" },
+    { city: "Bataraza", coords: [8.4695, 117.7724], description: "Fire in fishing village" },
+    { city: "San Vicente", coords: [10.1751, 119.1112], description: "Fire in agricultural area" },
+    { city: "Roxas", coords: [9.8235, 118.5029], description: "Fire near school area" },
+    { city: "Culion", coords: [12.0061, 120.0043], description: "Fire in coastal area" },
+    { city: "Balabac", coords: [7.9633, 117.0697], description: "Wildfire in remote area" },
+    { city: "Taytay", coords: [10.8026, 119.5831], description: "Fire in market center" },
+    { city: "Narra", coords: [9.5846, 118.4396], description: "Fire in residential area" }
+  ];
+
+  // Add fire markers for each incident
+  fireIncidents.forEach(function (incident) {
+    L.marker(incident.coords, { icon: fireIcon })
+      .addTo(map)
+      .bindPopup("<b>Fire Incident</b><br>" + incident.description + "<br>" + incident.city);
+  });
+
+  // Handle city selection to update map view and markers
+  document.getElementById('city-select').addEventListener('change', function (e) {
+    var selectedCity = e.target.value;
+    
+    if (selectedCity) {
+      // Coordinates for cities in Palawan
+      var cityCoordinates = {
+        "Puerto Princesa": [9.7415, 118.7384],
+        "El Nido": [11.2091, 119.3917],
+        "Coron": [12.0000, 120.0000],
+        "Bataraza": [8.4695, 117.7724],
+        "San Vicente": [10.1751, 119.1112],
+        "Roxas": [9.8235, 118.5029],
+        "Culion": [12.0061, 120.0043],
+        "Balabac": [7.9633, 117.0697],
+        "Taytay": [10.8026, 119.5831],
+        "Narra": [9.5846, 118.4396]
+      };
+      
+      if (cityCoordinates[selectedCity]) {
+        map.setView(cityCoordinates[selectedCity], 12);
+
+        // Clear existing markers before adding a new one
+        map.eachLayer(function (layer) {
+          if (layer instanceof L.Marker) {
+            map.removeLayer(layer);
+          }
+        });
+
+        // Add marker for the selected city
+        L.marker(cityCoordinates[selectedCity], { icon: fireIcon }).addTo(map)
+          .bindPopup("<b>Fire Incident</b><br>Fire in " + selectedCity)
+          .openPopup();
+      }
+    } else {
+      // Reset to default view if no city selected
+      map.setView([9.7457, 118.7354], 10); // Center back to Palawan
+    }
+  });
+</script>
+
+////
+<script>
+  var map = L.map('map').setView([9.81644, 50.72239], 1);
+  var fireIcon = L.icon({
+      iconUrl: "{% static 'img/fire.png' %}",
+      iconSize: [50, 50],
+  });
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  var markers = [];
+
+  var locations = {{ locations|safe }};
+
+  // Loop through the locations and their associated incidents
+  locations.forEach(function(location) {
+      var latitude = parseFloat(location.latitude);
+      var longitude = parseFloat(location.longitude);
+      var marker = L.marker([latitude, longitude], { icon: fireIcon }).addTo(map);
+
+      // Adjust popup content to include the count of incidents
+      var popupContent = "<b>" + location.name + "</b><br/>" + location.city + "<br/>Incidents: " + location.num_incidents;
+      marker.bindPopup(popupContent);
+
+      markers.push(marker);
+  });
+
+  // Event listener for city selection
+  document.getElementById('city-select').addEventListener('change', function() {
+    var selectedCity = this.value;
+    markers.forEach(function(marker) {
+      if (marker.getPopup().getContent().includes(selectedCity)) {
+        marker.openPopup();
+      } else {
+        marker.closePopup();
+      }
+    });
+  });
+</script>
+{% endblock %}

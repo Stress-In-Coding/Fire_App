@@ -6,8 +6,6 @@
     <title>{% block title %}FireApp{% endblock %}</title>
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
     <link rel="icon" href="{% static 'img/icon.ico' %}" type="image/x-icon" />
-
-    <!-- Fonts and icons -->
     <script src="{% static 'js/plugin/webfont/webfont.min.js' %}"></script>
     <script>
       WebFont.load({
@@ -18,6 +16,9 @@
         },
       });
     </script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
@@ -30,7 +31,7 @@
     <div class="wrapper">
       <div class="main-header">
         <!-- Logo Header -->
-        <div class="logo-header" data-background-color="blue">
+        <div class="logo-header" data-background-color="green2">
           <a href="index.html" class="logo">
             <img src="{% static 'img/logo.svg' %}" alt="navbar brand" class="navbar-brand" />
           </a>
@@ -49,16 +50,12 @@
         <!-- End Logo Header -->
 
         <!-- Navbar Header -->
-        <nav class="navbar navbar-header navbar-expand-lg" data-background-color="blue2">
+        <nav class="navbar navbar-header navbar-expand-lg" data-background-color="green">
           <div class="container-fluid">
             <div class="collapse" id="search-nav">
               
             </div>
             <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
-              
-              
-              
-              
             </ul>
           </div>
         </nav>
@@ -71,7 +68,7 @@
           <div class="sidebar-content">
             <div class="user">
               <div class="avatar-sm float-left mr-2">
-                <img src="{% static 'img/profile.jpg' %}" alt="..." class="avatar-img rounded-circle" />
+                <img src="{% static 'img/KUPAL1.jpg' %}" alt="Profile Image" class="avatar-img rounded-circle" />
               </div>
               <div class="info">
                 <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
@@ -104,27 +101,13 @@
                 </div>
               </div>
             </div>
+            
             <ul class="nav nav-primary">
               <li class="nav-item active">
-                <a data-toggle="collapse" href="#dashboard" class="collapsed" aria-expanded="false">
-                  <i class="fas fa-home"></i>
-                  <p>Dashboard</p>
-                  <span class="caret"></span>
+                <a href="{% url 'home' %}" class="collapsed" aria-expanded="false">
+                    <i class="fas fa-home"></i>
+                    <p>Dashboard</p>
                 </a>
-                <div class="collapse" id="dashboard">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="#">
-                        <span class="sub-item">Dashboard 1</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <span class="sub-item">Dashboard 2</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
               </li>
               <li class="nav-section">
                 <span class="sidebar-mini-icon">
@@ -132,31 +115,12 @@
                 </span>
                 <h4 class="text-section">Components</h4>
               </li>
-              <li class="nav-item">
-                <a data-toggle="collapse" href="#base">
-                  <i class="fas fa-layer-group"></i>
-                  <p>Base</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="base">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="components/avatars.html">
-                        <span class="sub-item">Avatars</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="components/buttons.html">
-                        <span class="sub-item">Buttons</span>
-                      </a>
-                    </li>
-                    
-                  </ul>
-                </div>
-              </li>
               
-              
-              
+
+
+             
+
+
               <li class="nav-item">
                 <a data-toggle="collapse" href="#maps">
                   <i class="fas fa-map-marker-alt"></i>
@@ -171,13 +135,57 @@
                       </a>
                     </li>
                     <li>
-                      <a href="maps/jqvmap.html">
+                      <a href="{% url 'fire_incidents_map' %}">
                         <span class="sub-item">Fire Incidents</span>
                       </a>
                     </li>
                   </ul>
                 </div>
               </li>
+
+              <li class="nav-item">
+                <a data-toggle="collapse" href="#records">
+                  <i class="bi bi-clipboard"></i>
+                  <p>Records</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="records">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="{% url 'Int-record' %}">
+                        <span class="sub-item">Incident Records</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'fire-station' %}">
+                        <span class="sub-item">Station Records</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'fire-fighters' %}">
+                        <span class="sub-item">Fire Fighters</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'fire-location' %}">
+                        <span class="sub-item">Fire Locations</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'fire-truck' %}">
+                        <span class="sub-item">Fire trucks</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'weather-condition' %}">
+                        <span class="sub-item">Weather Conditions</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+
+
               <li class="nav-item">
                 <a data-toggle="collapse" href="#charts">
                   <i class="far fa-chart-bar"></i>
@@ -187,27 +195,13 @@
                 <div class="collapse" id="charts">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="{% url 'dashboard-chart' %}">
+                      <a href="{% url 'ChartJs' %}">
                         <span class="sub-item">Chart Js</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="charts/sparkline.html">
-                        <span class="sub-item">Sparkline</span>
                       </a>
                     </li>
                   </ul>
                 </div>
               </li>
-              <li class="nav-item">
-                <a href="widgets.html">
-                  <i class="fas fa-desktop"></i>
-                  <p>Widgets</p>
-                  <span class="badge badge-success">4</span>
-                </a>
-              </li>
-              
-              
             </ul>
           </div>
         </div>
@@ -258,6 +252,7 @@
     <script src="{% static 'js/plugin/jqvmap/jquery.vmap.min.js' %}"></script>
     <script src="{% static 'js/plugin/jqvmap/maps/jquery.vmap.world.js' %}"></script>
     <script src="{% static 'js/plugin/sweetalert/sweetalert.min.js' %}"></script>
+
     <script src="{% static 'js/atlantis.min.js' %}"></script>
 
     {% block chart %}

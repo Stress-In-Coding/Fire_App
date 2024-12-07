@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">Station Records</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">List of Stations</div>
+                    </div>
+                    <br />
+                        <div class="col-md-12 row">
+                            <div class="col-md-6">
+                                <form class="navbar-form nav-search mr-md-3" action="">
+                                    <div class="input-group">
+                                        <input type="text" placeholder="Search ..." class="form-control" name="q" />
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="la la-search search icon"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="cola-md-6">
+                                <div class="pull-right">
+                                    <a href="{% url 'station-add' %}" class="btn btn-success btn-rounded">Add Station</a>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="card-body">
+                        <table class="table table-striped mt-3">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Latitude</th>
+                                    <th>Longitude</th>
+                                    <th>Address</th>
+                                    <th>City</th>
+                                    <th>Country</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                                <tbody>
+                                    {% for firestation in firestations %}
+                                        <tr>
+                                            <td>{{ firestation.name }}</td>
+                                            <td>{{ firestation.latitude }}</td>
+                                            <td>{{ firestation.longitude }}</td>
+                                            <td>{{ firestation.address }}</td>
+                                            <td>{{ firestation.city }}</td>
+                                            <td>{{ firestation.country }}</td>
+                                            <td>
+                                                <a href="{% url 'station-update' firestation.pk %}">Edit</a>
+                                                <a href="{% url 'station-delete' firestation.pk %}" class="text-danger">Delete</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                        </table>
+                        {% include 'includes/pagination.html' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
